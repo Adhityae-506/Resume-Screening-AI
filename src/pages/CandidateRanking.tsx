@@ -113,7 +113,7 @@ export default function CandidateRanking() {
             <p className="text-muted-foreground mb-6">
               Please define your job requirements first.
             </p>
-            <Button onClick={() => navigate("/job-description")}>
+            <Button onClick={() => navigate("/Elaborate the job description")}>
               <ArrowLeft className="h-4 w-4" />
               Go to Job Description
             </Button>
