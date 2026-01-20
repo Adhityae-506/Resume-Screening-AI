@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Candidate Rankings - AI Resume Screening</title>
+  <meta name="description" content="View AI-powered candidate rankings based on job-skill fit.">
+  <link rel="icon" href="/favicon.ico">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: 'hsl(230, 65%, 48%)',
+            'primary-foreground': 'hsl(0, 0%, 100%)',
+            secondary: 'hsl(180, 45%, 45%)',
+            'secondary-foreground': 'hsl(0, 0%, 100%)',
+            accent: 'hsl(168, 76%, 42%)',
+            'accent-foreground': 'hsl(0, 0%, 100%)',
+            background: 'hsl(220, 25%, 97%)',
+            foreground: 'hsl(230, 30%, 15%)',
+            card: 'hsl(0, 0%, 100%)',
+            'card-foreground': 'hsl(230, 30%, 15%)',
+            muted: 'hsl(220, 20%, 94%)',
+            'muted-foreground': 'hsl(230, 15%, 45%)',
+            border: 'hsl(220, 20%, 88%)',
+            success: 'hsl(158, 64%, 42%)',
+            'success-foreground': 'hsl(0, 0%, 100%)',
+            warning: 'hsl(38, 92%, 50%)',
+            destructive: 'hsl(0, 72%, 51%)',
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Plus Jakarta Sans', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-background text-foreground font-sans antialiased min-h-screen flex flex-col">
+  <!-- Header -->
+  <header class="header">
+    <div class="header-container">
+      <a href="/index.html" class="flex items-center gap-2">
+        <div class="w-10 h-10 rounded-xl gradient-hero flex items-center justify-center">
+          <svg class="h-5 w-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+            <path d="M11 8v6"/><path d="M8 11h6"/>
+          </svg>
+        </div>
+        <span class="font-display font-bold text-foreground text-lg">ResumeAI</span>
+      </a>
+
+      <nav class="hidden md:flex items-center gap-1">
+        <a href="/index.html" class="nav-link">
+          <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
+          </svg>
+          Home
+        </a>
+        <a href="/job-description.html" class="nav-link">
+          <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+          </svg>
+          Job Description
+        </a>
+        <a href="/resume-upload.html" class="nav-link">
+          <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/>
+          </svg>
+          Upload Resumes
+        </a>
+        <a href="/candidate-ranking.html" class="nav-link active">
+          <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="m19 9-5 5-4-4-3 3"/>
+          </svg>
+          Rankings
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main id="main-content" class="flex-1 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full">
+    <!-- Will be populated by JavaScript -->
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-card border-t border-border py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <p class="text-xs text-muted-foreground text-center">
+        <strong>Important:</strong> This AI-powered system assists in the screening process. 
+        Final hiring decisions should always be made by humans with careful consideration of all factors.
+      </p>
+    </div>
+  </footer>
+
+  <script src="/js/store.js"></script>
+  <script>
+    let isProcessing = false;
+    let analysisComplete = false;
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const mainContent = document.getElementById('main-content');
+      const jobDescription = ResumeStore.getJobDescription();
+      const candidates = ResumeStore.getCandidates();
+
+      // Check if job description exists
+      if (!jobDescription) {
+        mainContent.innerHTML = `
+          <div class="card max-w-lg mx-auto text-center p-8">
+            <svg class="h-12 w-12 text-warning mx-auto mb-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/>
+            </svg>
+            <h2 class="font-display text-xl font-semibold mb-2">No Job Description Found</h2>
+            <p class="text-muted-foreground mb-6">
+              Please define your job requirements first.
+            </p>
+            <a href="/job-description.html" class="btn-primary inline-flex items-center gap-2">
+              <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="m12 19-7-7 7-7"/><path d="M19 12H5"/>
+              </svg>
+              Go to Job Description
+            </a>
+          </div>
+        `;
+        return;
+      }
+
+      // Check if candidates exist
+      if (candidates.length === 0) {
+        mainContent.innerHTML = `
+          <div class="card max-w-lg mx-auto text-center p-8">
+            <svg class="h-12 w-12 text-warning mx-auto mb-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/>
+            </svg>
+            <h2 class="font-display text-xl font-semibold mb-2">No Resumes Uploaded</h2>
+            <p class="text-muted-foreground mb-6">
+              Please upload candidate resumes first.
+            </p>
+            <a href="/resume-upload.html" class="btn-primary inline-flex items-center gap-2">
+              <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="m12 19-7-7 7-7"/><path d="M19 12H5"/>
+              </svg>
+              Upload Resumes
+            </a>
+          </div>
+        `;
+        return;
+      }
+
+      renderPage(jobDescription, candidates);
+
+      // Check if any candidates need analysis
+      const unanalyzed = candidates.some(c => c.status === 'uploaded');
+      if (unanalyzed && !isProcessing) {
+        runAnalysis(jobDescription);
+      } else {
+        analysisComplete = true;
+      }
+    });
+
+    function renderPage(jobDescription, candidates) {
+      const mainContent = document.getElementById('main-content');
+      const jobSkills = extractJobSkills(jobDescription.description);
+      const analyzedCandidates = candidates
+        .filter(c => c.status === 'analyzed')
+        .sort((a, b) => (b.matchScore || 0) - (a.matchScore || 0));
+
+      mainContent.innerHTML = `
+        <!-- Header -->
+        <div class="text-center mb-10">
+          <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-primary/10 mb-6">
+            <svg class="h-8 w-8 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="m19 9-5 5-4-4-3 3"/>
+            </svg>
+          </div>
+          <h1 class="font-display text-3xl md:text-4xl font-bold text-foreground mb-4">
+            Candidate Rankings
+          </h1>
+          <p class="text-lg text-muted-foreground max-w-xl mx-auto">
+            AI-powered analysis for: <strong class="text-foreground">${jobDescription.title}</strong>
+          </p>
+        </div>
+
+        <!-- Progress Steps -->
+        <div class="flex items-center justify-center gap-2 mb-10 flex-wrap">
+          <div class="flex items-center gap-2">
+            <div class="w-8 h-8 rounded-full bg-success text-white flex items-center justify-center">
+              <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+              </svg>
+            </div>
+            <span class="text-sm text-muted-foreground">Job Details</span>
+          </div>
+          <div class="w-8 h-px bg-success"></div>
+          <div class="flex items-center gap-2">
+            <div class="w-8 h-8 rounded-full bg-success text-white flex items-center justify-center">
+              <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+              </svg>
+            </div>
+            <span class="text-sm text-muted-foreground">Upload Resumes</span>
+          </div>
+          <div class="w-8 h-px bg-success"></div>
+          <div class="flex items-center gap-2">
+            <div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center text-sm font-semibold">
+              3
+            </div>
+            <span class="text-sm font-medium text-foreground">View Rankings</span>
+          </div>
+        </div>
+
+        <!-- Job Skills Reference -->
+        <div class="card p-6 mb-8">
+          <h2 class="font-display text-lg font-semibold text-foreground flex items-center gap-2 mb-4">
+            <svg class="h-5 w-5 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>
+            </svg>
+            Required Skills for This Role
+          </h2>
+          <div class="flex flex-wrap gap-2">
+            ${jobSkills.map(skill => `<span class="skill-tag">${skill}</span>`).join('')}
+          </div>
+        </div>
+
+        <!-- Processing State -->
+        <div id="processing-state" class="hidden">
+          <div class="card mb-8 overflow-hidden">
+            <div class="gradient-hero p-6 text-white">
+              <div class="flex items-center gap-4">
+                <div class="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center">
+                  <svg class="h-6 w-6 animate-pulse" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/>
+                    <path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/>
+                  </svg>
+                </div>
+                <div class="flex-1">
+                  <h3 class="font-display text-lg font-semibold mb-1">
+                    Analyzing Resumes with Google Gemini AI
+                  </h3>
+                  <p class="text-white/80 text-sm">
+                    Extracting skills, understanding context, and calculating intelligent match scores...
+                  </p>
+                </div>
+              </div>
+              <div class="mt-4 space-y-2">
+                <div class="progress-bar bg-white/20">
+                  <div id="analysis-progress" class="progress-bar-fill bg-white" style="width: 0%"></div>
+                </div>
+                <p id="analysis-status" class="text-sm text-white/80">
+                  0 of ${candidates.length} candidates analyzed
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Candidate Cards -->
+        <div id="candidates-container" class="space-y-4 mb-8">
+          <!-- Will be populated by JavaScript -->
+        </div>
+
+        <!-- Disclaimer -->
+        <div class="card bg-muted/50 p-4 mb-8">
+          <p class="text-sm text-muted-foreground text-center">
+            <strong>Important:</strong> This AI-powered system assists in the screening process. 
+            Final hiring decisions should always be made by humans with careful consideration of all factors.
+          </p>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="/resume-upload.html" class="btn-outline flex-1 py-3 text-center">
+            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="m12 19-7-7 7-7"/><path d="M19 12H5"/>
+            </svg>
+            Upload More Resumes
+          </a>
+          <button id="reanalyze-btn" class="btn-primary flex-1 py-3">
+            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+              <path d="M3 3v5h5"/>
+              <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/>
+              <path d="M16 16h5v5"/>
+            </svg>
+            Re-analyze All
+          </button>
+        </div>
+      `;
+
+      // Render candidates
+      updateCandidatesUI();
+
+      // Setup reanalyze button
+      document.getElementById('reanalyze-btn').addEventListener('click', () => {
+        if (!isProcessing) {
+          // Reset all candidates to uploaded status
+          const candidates = ResumeStore.getCandidates();
+          candidates.forEach(c => {
+            ResumeStore.updateCandidate(c.id, { status: 'uploaded', matchScore: undefined, matchedSkills: undefined, missingSkills: undefined, extractedSkills: undefined });
+          });
+          runAnalysis(jobDescription);
+        }
+      });
+    }
+
+    async function runAnalysis(jobDescription) {
+      isProcessing = true;
+      analysisComplete = false;
+      
+      const processingState = document.getElementById('processing-state');
+      const reanalyzeBtn = document.getElementById('reanalyze-btn');
+      
+      processingState.classList.remove('hidden');
+      reanalyzeBtn.innerHTML = `
+        <div class="loader"></div>
+        Analyzing...
+      `;
+      reanalyzeBtn.disabled = true;
+
+      const candidates = ResumeStore.getCandidates();
+      const jobSkills = extractJobSkills(jobDescription.description);
+      let analyzed = 0;
+
+      for (const candidate of candidates) {
+        if (candidate.status !== 'analyzed') {
+          ResumeStore.updateCandidate(candidate.id, { status: 'processing' });
+          updateCandidatesUI();
+
+          try {
+            // Use AI-powered analysis
+            const results = await analyzeResumeWithAI(candidate, jobDescription);
+            ResumeStore.updateCandidate(candidate.id, results);
+          } catch (error) {
+            console.error('Analysis error:', error);
+            ResumeStore.updateCandidate(candidate.id, { status: 'error' });
+          }
+
+          analyzed++;
+          
+          // Update progress
+          const progress = (analyzed / candidates.length) * 100;
+          document.getElementById('analysis-progress').style.width = `${progress}%`;
+          document.getElementById('analysis-status').textContent = `${analyzed} of ${candidates.length} candidates analyzed`;
+          
+          updateCandidatesUI();
+        }
+      }
+
+      isProcessing = false;
+      analysisComplete = true;
+      
+      processingState.classList.add('hidden');
+      reanalyzeBtn.innerHTML = `
+        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+          <path d="M3 3v5h5"/>
+          <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/>
+          <path d="M16 16h5v5"/>
+        </svg>
+        Re-analyze All
+      `;
+      reanalyzeBtn.disabled = false;
+
+      Toast.success('Analysis Complete', 'All candidates have been analyzed and ranked.');
+      updateCandidatesUI();
+    }
+
+    function updateCandidatesUI() {
+      const container = document.getElementById('candidates-container');
+      const candidates = ResumeStore.getCandidates();
+      
+      if (isProcessing) {
+        // Show processing state
+        container.innerHTML = candidates.map((candidate, index) => `
+          <div class="candidate-card ${candidate.status === 'processing' ? 'processing' : ''}">
+            <div class="flex items-center gap-4">
+              <div class="w-12 h-12 rounded-xl bg-muted flex items-center justify-center">
+                ${candidate.status === 'processing' 
+                  ? '<div class="loader"></div>'
+                  : candidate.status === 'analyzed'
+                  ? '<svg class="h-6 w-6 text-success" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>'
+                  : '<svg class="h-6 w-6 text-muted-foreground" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>'
+                }
+              </div>
+              <div class="flex-1">
+                <h3 class="font-semibold text-foreground">${candidate.name}</h3>
+                <p class="text-sm text-muted-foreground">${candidate.fileName}</p>
+              </div>
+              <div class="text-sm text-muted-foreground">
+                ${candidate.status === 'processing' 
+                  ? '<span class="flex items-center gap-2 text-primary"><svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>Analyzing...</span>'
+                  : candidate.status === 'analyzed'
+                  ? `<span class="px-3 py-1 rounded-full text-sm font-semibold ${getScoreColor(candidate.matchScore)}">${candidate.matchScore}% Match</span>`
+                  : 'Waiting...'
+                }
+              </div>
+            </div>
+          </div>
+        `).join('');
+      } else {
+        // Show ranked results with enhanced AI data
+        const analyzedCandidates = candidates
+          .filter(c => c.status === 'analyzed')
+          .sort((a, b) => (b.matchScore || 0) - (a.matchScore || 0));
+
+        container.innerHTML = analyzedCandidates.map((candidate, index) => `
+          <div class="candidate-card card-hover ${index === 0 ? 'top-candidate' : ''}">
+            <div class="flex flex-col gap-4">
+              <!-- Header Row -->
+              <div class="flex flex-col md:flex-row md:items-start gap-4">
+                <!-- Rank & Avatar -->
+                <div class="flex items-center gap-4 md:gap-3">
+                  <div class="w-10 h-10 rounded-full flex items-center justify-center font-display font-bold text-lg ${
+                    index === 0 ? 'bg-accent text-white' :
+                    index === 1 ? 'bg-secondary text-white' :
+                    index === 2 ? 'bg-warning text-white' :
+                    'bg-muted text-muted-foreground'
+                  }">
+                    ${index === 0 
+                      ? '<svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>'
+                      : index + 1
+                    }
+                  </div>
+                  <div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
+                    <svg class="h-6 w-6 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+                    </svg>
+                  </div>
+                  <div class="md:hidden">
+                    <h3 class="font-semibold text-foreground">${candidate.name}</h3>
+                    <p class="text-sm text-muted-foreground">${candidate.fileName}</p>
+                  </div>
+                </div>
+
+                <!-- Info -->
+                <div class="flex-1">
+                  <div class="hidden md:block mb-3">
+                    <h3 class="font-semibold text-foreground">${candidate.name}</h3>
+                    <p class="text-sm text-muted-foreground">${candidate.fileName}</p>
+                  </div>
+
+                  <!-- Match Label -->
+                  <div class="mb-3">
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold ${getMatchLabelClass(candidate.matchLabel || getScoreLabel(candidate.matchScore))}">
+                      <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/>
+                        <path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/>
+                      </svg>
+                      ${candidate.matchLabel || getScoreLabel(candidate.matchScore)}
+                    </span>
+                    ${candidate.poweredBy ? `<span class="ml-2 text-xs text-muted-foreground">Powered by ${candidate.poweredBy}</span>` : ''}
+                  </div>
+
+                  <!-- Matched Skills -->
+                  <div class="mb-3">
+                    <p class="text-xs font-medium text-muted-foreground mb-2">✓ Matched Skills</p>
+                    <div class="flex flex-wrap gap-1.5">
+                      ${(candidate.matchedSkills || []).slice(0, 8).map(skill => 
+                        `<span class="skill-tag-matched text-xs px-2 py-0.5">${skill}</span>`
+                      ).join('')}
+                      ${(candidate.matchedSkills?.length || 0) > 8 
+                        ? `<span class="badge text-xs">+${candidate.matchedSkills.length - 8} more</span>` 
+                        : ''
+                      }
+                    </div>
+                  </div>
+
+                  <!-- Partially Matched Skills (if any) -->
+                  ${candidate.partiallyMatchedSkills && candidate.partiallyMatchedSkills.length > 0 ? `
+                    <div class="mb-3">
+                      <p class="text-xs font-medium text-muted-foreground mb-2">≈ Related Skills</p>
+                      <div class="flex flex-wrap gap-1.5">
+                        ${candidate.partiallyMatchedSkills.slice(0, 4).map(pm => 
+                          `<span class="badge bg-secondary/10 text-secondary text-xs px-2 py-0.5">${pm.resume} → ${pm.job}</span>`
+                        ).join('')}
+                      </div>
+                    </div>
+                  ` : ''}
+
+                  <!-- Missing Skills -->
+                  ${candidate.missingSkills && candidate.missingSkills.length > 0 ? `
+                    <div class="mb-3">
+                      <p class="text-xs font-medium text-muted-foreground mb-2">✗ Skills to Develop</p>
+                      <div class="flex flex-wrap gap-1.5">
+                        ${candidate.missingSkills.slice(0, 5).map(skill => 
+                          `<span class="badge bg-destructive/10 text-destructive text-xs px-2 py-0.5">${skill}</span>`
+                        ).join('')}
+                      </div>
+                    </div>
+                  ` : ''}
+
+                  <!-- Inferred Skills -->
+                  ${candidate.inferredSkills && candidate.inferredSkills.length > 0 ? `
+                    <div class="mb-3">
+                      <p class="text-xs font-medium text-muted-foreground mb-2">💡 Inferred Skills</p>
+                      <div class="flex flex-wrap gap-1.5">
+                        ${candidate.inferredSkills.slice(0, 4).map(skill => 
+                          `<span class="badge bg-accent/10 text-accent text-xs px-2 py-0.5">${skill}</span>`
+                        ).join('')}
+                      </div>
+                    </div>
+                  ` : ''}
+                </div>
+
+                <!-- Score -->
+                <div class="flex md:flex-col items-center gap-3 md:items-end">
+                  <div class="flex-1 md:flex-none">
+                    <div class="px-4 py-2 rounded-xl border font-semibold text-center ${getScoreColor(candidate.matchScore)}">
+                      <div class="text-2xl">${candidate.matchScore}%</div>
+                      <div class="text-xs font-normal">${candidate.matchLabel || getScoreLabel(candidate.matchScore)}</div>
+                    </div>
+                  </div>
+                  <div class="w-full md:w-32">
+                    <div class="progress-bar">
+                      <div class="progress-bar-gradient" style="width: ${candidate.matchScore}%"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- AI Explanation -->
+              ${candidate.explanation ? `
+                <div class="bg-muted/50 rounded-lg p-3 border-l-4 border-primary">
+                  <p class="text-xs font-medium text-muted-foreground mb-1">AI Analysis</p>
+                  <p class="text-sm text-foreground">${candidate.explanation}</p>
+                </div>
+              ` : ''}
+
+              <!-- Skill Gap Analysis -->
+              ${candidate.skillGapAnalysis && candidate.skillGapAnalysis.length > 0 ? `
+                <div class="bg-warning/5 rounded-lg p-3 border-l-4 border-warning">
+                  <p class="text-xs font-medium text-warning mb-2">Skill Gap Analysis</p>
+                  <ul class="text-xs text-muted-foreground space-y-1">
+                    ${candidate.skillGapAnalysis.slice(0, 3).map(gap => 
+                      `<li class="flex items-start gap-1.5">
+                        <svg class="h-3.5 w-3.5 text-warning mt-0.5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/>
+                        </svg>
+                        ${gap}
+                      </li>`
+                    ).join('')}
+                  </ul>
+                </div>
+              ` : ''}
+            </div>
+          </div>
+        `).join('');
+      }
+    }
+
+    // Get match label styling class
+    function getMatchLabelClass(label) {
+      switch(label) {
+        case 'Strong Match': return 'bg-success/10 text-success';
+        case 'Moderate Match': return 'bg-secondary/10 text-secondary';
+        case 'Potential Match': return 'bg-warning/10 text-warning';
+        case 'Low Match': return 'bg-destructive/10 text-destructive';
+        default: return 'bg-muted text-muted-foreground';
+      }
+    }
+  </script>
+</body>
+</html>

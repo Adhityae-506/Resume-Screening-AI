@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Resume Screening - Smart Hiring Powered by AI</title>
+  <meta name="description" content="Automatically analyze resumes and rank candidates based on job-skill fit using AI-powered screening technology.">
+  <link rel="icon" href="/favicon.ico">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: 'hsl(230, 65%, 48%)',
+            'primary-foreground': 'hsl(0, 0%, 100%)',
+            secondary: 'hsl(180, 45%, 45%)',
+            'secondary-foreground': 'hsl(0, 0%, 100%)',
+            accent: 'hsl(168, 76%, 42%)',
+            'accent-foreground': 'hsl(0, 0%, 100%)',
+            background: 'hsl(220, 25%, 97%)',
+            foreground: 'hsl(230, 30%, 15%)',
+            card: 'hsl(0, 0%, 100%)',
+            'card-foreground': 'hsl(230, 30%, 15%)',
+            muted: 'hsl(220, 20%, 94%)',
+            'muted-foreground': 'hsl(230, 15%, 45%)',
+            border: 'hsl(220, 20%, 88%)',
+            success: 'hsl(158, 64%, 42%)',
+            'success-foreground': 'hsl(0, 0%, 100%)',
+            warning: 'hsl(38, 92%, 50%)',
+            destructive: 'hsl(0, 72%, 51%)',
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Plus Jakarta Sans', 'sans-serif'],
+          },
+          boxShadow: {
+            soft: '0 4px 20px -4px rgba(0, 0, 0, 0.1)',
+            'soft-lg': '0 10px 40px -8px rgba(0, 0, 0, 0.15)',
+            glow: '0 0 20px hsl(230, 65%, 48%, 0.3)',
+          },
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-background text-foreground font-sans antialiased min-h-screen">
+  <!-- Hero Section -->
+  <section class="relative overflow-hidden">
+    <!-- Gradient Background -->
+    <div class="absolute inset-0 gradient-hero opacity-95"></div>
+    
+    <!-- Floating Elements -->
+    <div class="absolute inset-0 overflow-hidden">
+      <div class="absolute top-20 left-10 w-72 h-72 bg-white/10 rounded-full blur-3xl animate-float"></div>
+      <div class="absolute bottom-20 right-10 w-96 h-96 bg-accent/20 rounded-full blur-3xl animate-float" style="animation-delay: 1s;"></div>
+    </div>
+
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32">
+      <div class="max-w-3xl mx-auto text-center">
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white text-sm font-medium mb-6 animate-fade-in">
+          <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
+          </svg>
+          AI-Powered Resume Screening
+        </div>
+        
+        <h1 class="font-display text-4xl md:text-6xl font-bold text-white mb-6 animate-slide-up">
+          Smart Resume Screening
+          <span class="text-accent"> Powered by AI</span>
+        </h1>
+        
+        <p class="text-xl text-white/80 mb-10 animate-slide-up" style="animation-delay: 0.1s;">
+          Automatically analyze resumes and rank candidates based on job-skill fit. 
+          Find your perfect hire in minutes, not hours.
+        </p>
+
+        <div class="flex flex-col sm:flex-row gap-4 justify-center animate-slide-up" style="animation-delay: 0.2s;">
+          <a href="/job-description.html" class="btn-hero inline-flex items-center justify-center gap-2">
+            Start Screening
+            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+            </svg>
+          </a>
+          <a href="#how-it-works" class="btn-hero-outline inline-flex items-center justify-center">
+            How It Works
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Wave Divider -->
+    <div class="absolute bottom-0 left-0 right-0">
+      <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0 120L60 110C120 100 240 80 360 70C480 60 600 60 720 65C840 70 960 80 1080 85C1200 90 1320 90 1380 90L1440 90V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z" fill="hsl(220, 25%, 97%)"/>
+      </svg>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section id="how-it-works" class="py-24 bg-background">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground mb-4">
+          How It Works
+        </h2>
+        <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
+          Three simple steps to find your ideal candidates
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-8 stagger-children">
+        <!-- Step 1 -->
+        <div class="relative p-8 rounded-2xl bg-card border border-border shadow-soft card-hover opacity-0">
+          <div class="absolute -top-4 -left-4 w-12 h-12 rounded-xl bg-primary text-white flex items-center justify-center font-display font-bold text-lg shadow-glow">
+            1
+          </div>
+          <div class="mt-4">
+            <div class="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-5">
+              <svg class="h-7 w-7 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/>
+              </svg>
+            </div>
+            <h3 class="font-display text-xl font-semibold text-foreground mb-3">
+              Upload Resumes
+            </h3>
+            <p class="text-muted-foreground">
+              Bulk upload candidate resumes in PDF or DOCX format
+            </p>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="relative p-8 rounded-2xl bg-card border border-border shadow-soft card-hover opacity-0">
+          <div class="absolute -top-4 -left-4 w-12 h-12 rounded-xl bg-primary text-white flex items-center justify-center font-display font-bold text-lg shadow-glow">
+            2
+          </div>
+          <div class="mt-4">
+            <div class="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-5">
+              <svg class="h-7 w-7 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/>
+                <path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/>
+                <path d="M15 13a4.5 4.5 0 0 1-3-4 4.5 4.5 0 0 1-3 4"/>
+                <path d="M17.599 6.5a3 3 0 0 0 .399-1.375"/>
+                <path d="M6.003 5.125A3 3 0 0 0 6.401 6.5"/>
+                <path d="M3.477 10.896a4 4 0 0 1 .585-.396"/>
+                <path d="M19.938 10.5a4 4 0 0 1 .585.396"/>
+                <path d="M6 18a4 4 0 0 1-1.967-.516"/>
+                <path d="M19.967 17.484A4 4 0 0 1 18 18"/>
+              </svg>
+            </div>
+            <h3 class="font-display text-xl font-semibold text-foreground mb-3">
+              AI Analysis
+            </h3>
+            <p class="text-muted-foreground">
+              Advanced AI extracts skills and matches them to your job requirements
+            </p>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="relative p-8 rounded-2xl bg-card border border-border shadow-soft card-hover opacity-0">
+          <div class="absolute -top-4 -left-4 w-12 h-12 rounded-xl bg-primary text-white flex items-center justify-center font-display font-bold text-lg shadow-glow">
+            3
+          </div>
+          <div class="mt-4">
+            <div class="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-5">
+              <svg class="h-7 w-7 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="m19 9-5 5-4-4-3 3"/>
+              </svg>
+            </div>
+            <h3 class="font-display text-xl font-semibold text-foreground mb-3">
+              Smart Ranking
+            </h3>
+            <p class="text-muted-foreground">
+              Get instant candidate rankings based on job-skill fit scores
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Benefits Section -->
+  <section class="py-24 bg-muted/30">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid lg:grid-cols-2 gap-16 items-center">
+        <div>
+          <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground mb-6">
+            Why Choose AI-Powered Screening?
+          </h2>
+          <p class="text-lg text-muted-foreground mb-8">
+            Traditional resume screening is time-consuming and prone to bias. 
+            Our AI analyzes candidates objectively based on skills and qualifications.
+          </p>
+          
+          <ul class="space-y-4" id="benefits-list">
+            <li class="flex items-start gap-3">
+              <svg class="h-6 w-6 text-success flex-shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+              </svg>
+              <span class="text-foreground">Reduce screening time by up to 75%</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <svg class="h-6 w-6 text-success flex-shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+              </svg>
+              <span class="text-foreground">Eliminate unconscious bias in initial screening</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <svg class="h-6 w-6 text-success flex-shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+              </svg>
+              <span class="text-foreground">Never miss qualified candidates</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <svg class="h-6 w-6 text-success flex-shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+              </svg>
+              <span class="text-foreground">Transparent, explainable scoring</span>
+            </li>
+          </ul>
+
+          <a href="/job-description.html" class="inline-flex items-center gap-2 mt-8 btn-primary">
+            Get Started Free
+            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+            </svg>
+          </a>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div class="p-6 rounded-2xl bg-card border border-border shadow-soft">
+            <svg class="h-10 w-10 text-warning mb-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+            </svg>
+            <h3 class="font-display text-2xl font-bold text-foreground">75%</h3>
+            <p class="text-muted-foreground">Faster Screening</p>
+          </div>
+          <div class="p-6 rounded-2xl bg-card border border-border shadow-soft mt-8">
+            <svg class="h-10 w-10 text-success mb-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+            <h3 class="font-display text-2xl font-bold text-foreground">100%</h3>
+            <p class="text-muted-foreground">Objective Analysis</p>
+          </div>
+          <div class="p-6 rounded-2xl bg-card border border-border shadow-soft">
+            <svg class="h-10 w-10 text-primary mb-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/>
+              <path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/>
+              <path d="M15 13a4.5 4.5 0 0 1-3-4 4.5 4.5 0 0 1-3 4"/>
+            </svg>
+            <h3 class="font-display text-2xl font-bold text-foreground">AI</h3>
+            <p class="text-muted-foreground">Skill Extraction</p>
+          </div>
+          <div class="p-6 rounded-2xl bg-card border border-border shadow-soft mt-8">
+            <svg class="h-10 w-10 text-secondary mb-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+              <path d="M11 8v6"/><path d="M8 11h6"/>
+            </svg>
+            <h3 class="font-display text-2xl font-bold text-foreground">∞</h3>
+            <p class="text-muted-foreground">Resumes Analyzed</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="py-24 bg-background">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="relative overflow-hidden rounded-3xl gradient-hero p-12 md:p-16 text-center">
+        <div class="absolute inset-0 overflow-hidden">
+          <div class="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
+          <div class="absolute bottom-0 left-0 w-64 h-64 bg-accent/20 rounded-full blur-3xl"></div>
+        </div>
+        
+        <div class="relative z-10 max-w-2xl mx-auto">
+          <h2 class="font-display text-3xl md:text-4xl font-bold text-white mb-6">
+            Ready to Transform Your Hiring?
+          </h2>
+          <p class="text-lg text-white/80 mb-8">
+            Start screening resumes with AI today. No credit card required.
+          </p>
+          <a href="/job-description.html" class="btn-hero inline-flex items-center gap-2">
+            Start Screening Now
+            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-card border-t border-border py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+        <div class="flex items-center gap-2">
+          <div class="w-10 h-10 rounded-xl gradient-hero flex items-center justify-center">
+            <svg class="h-5 w-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+              <path d="M11 8v6"/><path d="M8 11h6"/>
+            </svg>
+          </div>
+          <span class="font-display font-bold text-foreground text-lg">ResumeAI</span>
+        </div>
+        
+        <p class="text-sm text-muted-foreground text-center max-w-md">
+          AI-powered resume screening that helps recruiters find the best candidates faster and more fairly.
+        </p>
+        
+        <div class="flex items-center gap-1 px-3 py-1.5 rounded-full bg-muted text-muted-foreground text-xs">
+          <svg class="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+          Human decisions final
+        </div>
+      </div>
+      
+      <div class="mt-8 pt-6 border-t border-border">
+        <p class="text-xs text-muted-foreground text-center">
+          <strong>Important:</strong> This AI-powered system assists in the screening process. 
+          Final hiring decisions should always be made by humans with careful consideration of all factors.
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/js/store.js"></script>
+</body>
+</html>

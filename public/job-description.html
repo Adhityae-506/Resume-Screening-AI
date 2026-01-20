@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Job Description - AI Resume Screening</title>
+  <meta name="description" content="Define your job requirements for AI-powered resume screening.">
+  <link rel="icon" href="/favicon.ico">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: 'hsl(230, 65%, 48%)',
+            'primary-foreground': 'hsl(0, 0%, 100%)',
+            secondary: 'hsl(180, 45%, 45%)',
+            'secondary-foreground': 'hsl(0, 0%, 100%)',
+            accent: 'hsl(168, 76%, 42%)',
+            'accent-foreground': 'hsl(0, 0%, 100%)',
+            background: 'hsl(220, 25%, 97%)',
+            foreground: 'hsl(230, 30%, 15%)',
+            card: 'hsl(0, 0%, 100%)',
+            'card-foreground': 'hsl(230, 30%, 15%)',
+            muted: 'hsl(220, 20%, 94%)',
+            'muted-foreground': 'hsl(230, 15%, 45%)',
+            border: 'hsl(220, 20%, 88%)',
+            success: 'hsl(158, 64%, 42%)',
+            'success-foreground': 'hsl(0, 0%, 100%)',
+            warning: 'hsl(38, 92%, 50%)',
+            destructive: 'hsl(0, 72%, 51%)',
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Plus Jakarta Sans', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-background text-foreground font-sans antialiased min-h-screen">
+  <!-- Header -->
+  <header class="header">
+    <div class="header-container">
+      <a href="/index.html" class="flex items-center gap-2">
+        <div class="w-10 h-10 rounded-xl gradient-hero flex items-center justify-center">
+          <svg class="h-5 w-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+            <path d="M11 8v6"/><path d="M8 11h6"/>
+          </svg>
+        </div>
+        <span class="font-display font-bold text-foreground text-lg">ResumeAI</span>
+      </a>
+
+      <nav class="hidden md:flex items-center gap-1">
+        <a href="/index.html" class="nav-link">
+          <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
+          </svg>
+          Home
+        </a>
+        <a href="/job-description.html" class="nav-link active">
+          <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+          </svg>
+          Job Description
+        </a>
+        <a href="/resume-upload.html" class="nav-link">
+          <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/>
+          </svg>
+          Upload Resumes
+        </a>
+        <a href="/candidate-ranking.html" class="nav-link">
+          <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="m19 9-5 5-4-4-3 3"/>
+          </svg>
+          Rankings
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <!-- Header -->
+    <div class="text-center mb-10">
+      <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-primary/10 mb-6">
+        <svg class="h-8 w-8 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+        </svg>
+      </div>
+      <h1 class="font-display text-3xl md:text-4xl font-bold text-foreground mb-4">
+        Define Your Job Requirements
+      </h1>
+      <p class="text-lg text-muted-foreground max-w-xl mx-auto">
+        Provide the job details so our AI can match candidates based on relevant skills and experience.
+      </p>
+    </div>
+
+    <!-- Progress Steps -->
+    <div class="flex items-center justify-center gap-2 mb-10 flex-wrap">
+      <div class="flex items-center gap-2">
+        <div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center text-sm font-semibold">
+          1
+        </div>
+        <span class="text-sm font-medium text-foreground">Job Details</span>
+      </div>
+      <div class="w-8 h-px bg-border"></div>
+      <div class="flex items-center gap-2">
+        <div class="w-8 h-8 rounded-full bg-muted text-muted-foreground flex items-center justify-center text-sm font-semibold">
+          2
+        </div>
+        <span class="text-sm text-muted-foreground">Upload Resumes</span>
+      </div>
+      <div class="w-8 h-px bg-border"></div>
+      <div class="flex items-center gap-2">
+        <div class="w-8 h-8 rounded-full bg-muted text-muted-foreground flex items-center justify-center text-sm font-semibold">
+          3
+        </div>
+        <span class="text-sm text-muted-foreground">View Rankings</span>
+      </div>
+    </div>
+
+    <!-- Form Card -->
+    <div class="card p-6 md:p-8">
+      <div class="mb-6">
+        <h2 class="font-display text-xl font-semibold text-foreground flex items-center gap-2">
+          <svg class="h-5 w-5 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+            <polyline points="14 2 14 8 20 8"/>
+          </svg>
+          Job Information
+        </h2>
+        <p class="text-muted-foreground text-sm mt-1">
+          Fill in the details about the position you're hiring for
+        </p>
+      </div>
+
+      <form id="job-form" class="space-y-6">
+        <!-- Job Title -->
+        <div>
+          <label for="title" class="label">
+            <svg class="h-4 w-4 text-muted-foreground" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+            </svg>
+            Job Title <span class="text-destructive">*</span>
+          </label>
+          <input
+            type="text"
+            id="title"
+            name="title"
+            placeholder="e.g., Senior Frontend Developer"
+            class="input-field"
+            required
+          />
+          <p id="title-error" class="error-text hidden"></p>
+        </div>
+
+        <!-- Job Description -->
+        <div>
+          <label for="description" class="label">
+            <svg class="h-4 w-4 text-muted-foreground" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+              <polyline points="14 2 14 8 20 8"/>
+            </svg>
+            Job Description <span class="text-destructive">*</span>
+          </label>
+          <textarea
+            id="description"
+            name="description"
+            placeholder="Describe the role, responsibilities, and required skills..."
+            rows="8"
+            class="textarea-field"
+            required
+          ></textarea>
+          <p id="description-error" class="error-text hidden"></p>
+          <p class="helper-text">
+            Include key skills, qualifications, and responsibilities for better matching
+          </p>
+        </div>
+
+        <!-- Optional Fields -->
+        <div class="grid md:grid-cols-2 gap-6">
+          <div>
+            <label for="experience" class="label">
+              <svg class="h-4 w-4 text-muted-foreground" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+              </svg>
+              Required Experience
+            </label>
+            <input
+              type="text"
+              id="experience"
+              name="experience"
+              placeholder="e.g., 3-5 years"
+              class="input-field"
+            />
+          </div>
+
+          <div>
+            <label for="location" class="label">
+              <svg class="h-4 w-4 text-muted-foreground" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/>
+              </svg>
+              Location
+            </label>
+            <input
+              type="text"
+              id="location"
+              name="location"
+              placeholder="e.g., Remote, New York, NY"
+              class="input-field"
+            />
+          </div>
+        </div>
+
+        <!-- Tips Card -->
+        <div class="p-4 rounded-xl bg-accent/10 border border-accent/20">
+          <div class="flex gap-3">
+            <svg class="h-5 w-5 text-accent flex-shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/>
+              <path d="M9 18h6"/><path d="M10 22h4"/>
+            </svg>
+            <div>
+              <h4 class="font-medium text-foreground mb-1">Pro Tip</h4>
+              <p class="text-sm text-muted-foreground">
+                Include specific technical skills, tools, and technologies in your job description. 
+                The more detailed, the better the AI can match candidates.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn-primary w-full py-3 text-base gap-2">
+          Save Job Requirements
+          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+          </svg>
+        </button>
+      </form>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-card border-t border-border py-8 mt-auto">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <p class="text-xs text-muted-foreground text-center">
+        <strong>Important:</strong> This AI-powered system assists in the screening process. 
+        Final hiring decisions should always be made by humans with careful consideration of all factors.
+      </p>
+    </div>
+  </footer>
+
+  <script src="/js/store.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const form = document.getElementById('job-form');
+      const titleInput = document.getElementById('title');
+      const descriptionInput = document.getElementById('description');
+      const experienceInput = document.getElementById('experience');
+      const locationInput = document.getElementById('location');
+      const titleError = document.getElementById('title-error');
+      const descriptionError = document.getElementById('description-error');
+
+      // Load existing data if available
+      const savedJob = ResumeStore.getJobDescription();
+      if (savedJob) {
+        titleInput.value = savedJob.title || '';
+        descriptionInput.value = savedJob.description || '';
+        experienceInput.value = savedJob.experience || '';
+        locationInput.value = savedJob.location || '';
+      }
+
+      // Clear error on input
+      titleInput.addEventListener('input', () => {
+        titleError.classList.add('hidden');
+        titleInput.classList.remove('error');
+      });
+
+      descriptionInput.addEventListener('input', () => {
+        descriptionError.classList.add('hidden');
+        descriptionInput.classList.remove('error');
+      });
+
+      // Form submission
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        let hasError = false;
+
+        // Validate title
+        if (!titleInput.value.trim()) {
+          titleError.textContent = 'Job title is required';
+          titleError.classList.remove('hidden');
+          titleInput.classList.add('error');
+          hasError = true;
+        }
+
+        // Validate description
+        if (!descriptionInput.value.trim()) {
+          descriptionError.textContent = 'Job description is required';
+          descriptionError.classList.remove('hidden');
+          descriptionInput.classList.add('error');
+          hasError = true;
+        } else if (descriptionInput.value.trim().length < 50) {
+          descriptionError.textContent = 'Please provide a more detailed job description (at least 50 characters)';
+          descriptionError.classList.remove('hidden');
+          descriptionInput.classList.add('error');
+          hasError = true;
+        }
+
+        if (hasError) {
+          Toast.error('Validation Error', 'Please fix the errors in the form');
+          return;
+        }
+
+        // Save job description
+        ResumeStore.setJobDescription({
+          title: titleInput.value.trim(),
+          description: descriptionInput.value.trim(),
+          experience: experienceInput.value.trim() || undefined,
+          location: locationInput.value.trim() || undefined
+        });
+
+        Toast.success('Job Requirements Saved', "Now let's upload some resumes to analyze");
+
+        // Navigate to upload page
+        setTimeout(() => {
+          window.location.href = '/resume-upload.html';
+        }, 1000);
+      });
+    });
+  </script>
+</body>
+</html>
