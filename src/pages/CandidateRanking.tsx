@@ -22,7 +22,6 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-// Simulated skill extraction and matching (will be replaced with AI)
 const simulateAIAnalysis = async (
   candidate: Candidate,
   jobSkills: string[]
