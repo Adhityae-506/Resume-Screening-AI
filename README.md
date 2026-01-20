@@ -7,12 +7,12 @@ The system minimizes repetitive manual work, improves screening efficiency, and 
 
 ## 📌 Problem Statement
 
-Recruiters often receive a large number of resumes for a single job opening.  
+Recruiters often receive a large number of resumes for a single job opening. Openings in some companies often get hundred of resumes which takes a lot of time to manually checking every resume. 
 Manually reviewing each resume is:
 - Time-consuming
 - Prone to human bias
 - Inefficient for bulk hiring
-
+  
 This project solves the problem by using AI to analyze resumes, extract skills, and rank candidates based on job relevance.
 
 ---
