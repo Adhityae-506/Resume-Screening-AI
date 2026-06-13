@@ -22,7 +22,6 @@ const App = () => (
           <Route path="/job-description" element={<JobDescription />} />
           <Route path="/upload" element={<ResumeUpload />} />
           <Route path="/ranking" element={<CandidateRanking />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
